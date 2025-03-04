@@ -1,6 +1,6 @@
 <?php
 
-$uploadDir = 'uploads';
+$uploadDir = 'uploads/products';
 function filterString($field)
 {
     $field = filter_var(trim($field),FILTER_SANITIZE_SPECIAL_CHARS);
@@ -105,11 +105,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $message .= '<p style="color: #ff0000;" >' .$message .'</p>';
         $message .= '</body></html>';
 
-        if (mail($config['mail_admin'],'New Message',$text)){
-            unset($_SESSION['contact_form']);
-            header('Location: /mojeeb/contact.php');
-        }else
-            echo "Error sending Your Email";
+//        if (mail($config['mail_admin'],'New Message',$text)){
+//            unset($_SESSION['contact_form']);
+//
+//        }else
+//            echo "Error sending Your Email";
+
+        $query = $pdo->prepare("INSERT INTO users (email, name, document, description,services_id)
+VALUES ('{$email}', '{$name}', '/uploads/products/{$fileName}', '{$text}','{$_POST['services']}')");
+
+        $query->execute();
+        header('Location: /mojeeb/index.php');
     }
 }
 

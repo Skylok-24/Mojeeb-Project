@@ -1,6 +1,7 @@
 <?php $title = "Contact";
 require_once 'classes/Services.php';
 require_once 'template/header.php';
+require_once 'config/Database.php';
 require_once 'includes/uploader.php';
 ?>
 <?php isset($_SESSION['contact_form']['user']) ? $sender = $_SESSION['contact_form']['user'] : $sender = '' ;
@@ -12,8 +13,13 @@ if (isset($_COOKIE['is_admin']) && $_COOKIE['is_admin'] == 1) {
     echo "<a href = '/admin'>go to admin</a>";
 }
 
-$services = new \classes\Services();
-$services->taxRate = .05;
+
+$s = new \classes\Services();
+$s->taxRate = .05;
+
+$query = $pdo->prepare("SELECT id,name,price FROM services");
+$query->execute();
+$services = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
     <style>
        form {
@@ -43,10 +49,10 @@ $services->taxRate = .05;
         <div class="form-group">
             <label for="services" class="form-label">Services</label>
             <select name="services" id="services" class="form-control">
-                <?php foreach ($services->all() as $service) { ?>
-                    <option value="<?= $service['name'] ?>">
+                <?php foreach ($services as $service) { ?>
+                    <option value="<?= $service['id'] ?>">
                         <?= $service['name'] ?>
-                        (<?= $services->price($service['price']) ?>) DA
+                        (<?= $s->price($service['price']) ?>) DA
                     </option>
                <?php } ?>
             </select>
@@ -60,7 +66,13 @@ $services->taxRate = .05;
         <a href="<?= $uploadDir ?>/3d-rendering-hexagonal-texture-background.jpg" class="btn btn-primary" >Download Your file</a>
     </form>
 
-<?php require_once 'template/fouter.php';
+<?php
+print_r($_POST);
+//print_r($_POST);
+//print_r($_FILES);
+//echo $_FILES['document']['full_path'];
+//echo $_POST['document'];
+require_once 'template/fouter.php';
 //$input = "<script> $('body').html('<h1>You Are Hacked</h1>') </script>";
 //echo $input;
 ?>
