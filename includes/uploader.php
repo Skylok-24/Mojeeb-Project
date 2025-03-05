@@ -112,9 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //            echo "Error sending Your Email";
 
         $query = $pdo->prepare("INSERT INTO users (email, name, document, description,services_id)
-VALUES ('{$email}', '{$name}', '/uploads/products/{$fileName}', '{$text}','{$_POST['services']}')");
+VALUES (?, ?,?, ?,?)");
 
-        $query->execute();
+        $filePath = '/uploads/products/'.$fileName;
+        $query->execute([$email,$name,$filePath,$text,$_POST['services']]);
         header('Location: /mojeeb/index.php');
     }
 }

@@ -2,11 +2,15 @@
 
 require_once 'template/header.php';
 require_once 'config/Database.php';
-$query = $pdo->prepare("SELECT *, u.id as user_id, u.name as user_name , u.id as user_id FROM users u 
-    left join services s 
-        on u.services_id = s.id");
+require_once 'config/app.php';
+$query = $pdo->prepare("
+    SELECT *, u.id as user_id, u.name as user_name
+    FROM users u 
+    LEFT JOIN services s ON u.services_id = s.id 
+");
 $query->execute();
 $users = $query->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <?php if(!isset($_GET['id'])) { ?>
 <h1>Recieved Messages</h1>
@@ -33,7 +37,10 @@ $users = $query->fetchAll(PDO::FETCH_ASSOC);
                     <td><?= $user['document'] ?></td>
                     <td>
                         <a href="?id=<?= $user['user_id'] ?>" class="btn btn-sm btn-primary">View</a>
-                        <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                        <form style="display: inline-block" action="" method="post" >
+                            <input type="hidden" name="delete" value="<?= $user['user_id'] ?>">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
             <?php } ?>
@@ -41,7 +48,7 @@ $users = $query->fetchAll(PDO::FETCH_ASSOC);
     </table>
 </div>
     <?php } else {
-    $query = $pdo->prepare("SELECT *, u.id as user_id, u.name as user_name , u.id as user_id FROM users u 
+    $query = $pdo->prepare("SELECT *, u.id as user_id, u.name as user_name , u.description as user_des , u.document as file FROM users u 
     left join services s 
         on u.services_id = s.id
          WHERE u.id=".$_GET['id']);
@@ -56,14 +63,19 @@ $users = $query->fetchAll(PDO::FETCH_ASSOC);
         </h5>
         <div class="card-body">
             <div>Service : <?php if($user[0]['name']) echo $user[0]['name']; else echo 'no service'  ?></div>
-            <?= $user[0]['description'] ?>
+            <?= $user[0]['user_des'] ?>
         </div>
         <div class="card-footer">
-            Attachment : <a href="">Download attachment</a>
+            Attachment : <a href="<?= $config['app_url'].$user[0]['file'] ?>">Download attachment</a>
         </div>
     </div>
 
 <?php } ?>
 <?php
+if(isset($_POST['delete'])) {
+    $query = $pdo->prepare("delete from users where id=?");
+    $query->execute([$_POST['delete']]);
+    header("Location: /mojeeb/messages.php");
+}
 require_once 'template/fouter.php';
 ?>
