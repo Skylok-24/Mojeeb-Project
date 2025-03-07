@@ -22,4 +22,38 @@ use PDOException;
     </style>
 </head>
 <body>
-<div class="container">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="<?= $config['app_url'] ?>"><?= $config['app_name'] ?></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><li class="nav-item">
+                </li>
+                    <a class="nav-link active" aria-current="page" href="<?= $config['app_url'] ?>">Home</a>
+                </li>
+                <a class="nav-link" href="<?= $config['app_url'] ?>/contact.php">Contact</a>
+            </ul>
+                <ul class="navbar-nav ms-auto">
+                    <?php if (empty($_SESSION['logen_in'])) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $config['app_url'] ?>/login.php">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $config['app_url'] ?>/registeration.php">Register</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $config['app_url'] ?>/registeration.php"><?= $_SESSION['user_name'] ?></a>
+                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= $config['app_url'] ?>/logout.php">Logout</a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+        </div>
+    </div>
+</nav>
+<div class="container pt-5">

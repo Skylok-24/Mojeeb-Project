@@ -5,7 +5,7 @@ require_once 'config/Database.php';
 require_once 'config/app.php';
 $query = $pdo->prepare("
     SELECT *, u.id as user_id, u.name as user_name
-    FROM users u 
+    FROM messages u 
     LEFT JOIN services s ON u.services_id = s.id 
 ");
 $query->execute();
@@ -48,7 +48,7 @@ $users = $query->fetchAll(PDO::FETCH_ASSOC);
     </table>
 </div>
     <?php } else {
-    $query = $pdo->prepare("SELECT *, u.id as user_id, u.name as user_name , u.description as user_des , u.document as file FROM users u 
+    $query = $pdo->prepare("SELECT *, u.id as user_id, u.name as user_name , u.description as user_des , u.document as file FROM messages u 
     left join services s 
         on u.services_id = s.id
          WHERE u.id=".$_GET['id']);
@@ -73,7 +73,7 @@ $users = $query->fetchAll(PDO::FETCH_ASSOC);
 <?php } ?>
 <?php
 if(isset($_POST['delete'])) {
-    $query = $pdo->prepare("delete from users where id=?");
+    $query = $pdo->prepare("delete from messages where id=?");
     $query->execute([$_POST['delete']]);
     header("Location: /mojeeb/messages.php");
 }

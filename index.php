@@ -1,4 +1,5 @@
 <?php
+session_start();
 use classes\Services;
 use classes\Product;
 $title = "Home Page";
@@ -17,11 +18,12 @@ $products = new Product();
 $products->taxRate = .05;
 //print_r($service->all());
 //$services->taxRate = .3;
-
+require_once 'template/message.php';
+//print_r($_SESSION);
 ?>
-<?php isset($_SESSION['contact_form']['user']) ? $sender = $_SESSION['contact_form']['user'] : $sender = '' ?>
+<?php isset($_SESSION['user_name']) ? $sender = $_SESSION['user_name'] : $sender = '' ?>
 
-<h1><?= $sender ?> Welcome To Our Page</h1>
+<h1> Welcome To Our Page</h1>
 
     <hr>
     <div class="row">

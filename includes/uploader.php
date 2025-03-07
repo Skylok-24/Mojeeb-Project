@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //        }else
 //            echo "Error sending Your Email";
 
-        $query = $pdo->prepare("INSERT INTO users (email, name, document, description,services_id)
+        $query = $pdo->prepare("INSERT INTO messages (email, name, document, description,services_id)
 VALUES (?, ?,?, ?,?)");
 
         $filePath = '/uploads/products/'.$fileName;
