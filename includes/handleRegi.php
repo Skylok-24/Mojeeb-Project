@@ -68,10 +68,4 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-//    if (!$errorPassword && !$errorEmail && !$errorName && !$errorconfPassword) {
-//        $created_at = date("Y-m-d H:i:s");
-//        $query = $pdo->prepare("INSERT INTO users (email,name,password) VALUES (?,?,?)");
-//        $query->execute([$email,$name,$password]);
-//        header("Location: /mojeeb/registeration.php");
-//    }
 }

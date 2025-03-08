@@ -29,6 +29,7 @@ require_once 'template/errors.php';
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-success">Login</button>
+            <a href="/mojeeb/password.rest.php">Forgot your passsword?</a>
         </div>
     </form>
 </div>

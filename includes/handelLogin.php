@@ -1,6 +1,8 @@
 <?php
 
-
+if (!empty($_SESSION['logen_in'])) {
+    header("Location: /mojeeb/index.php");
+}
 function filterString($text)
 {
     $text = filter_var(trim($text), FILTER_SANITIZE_SPECIAL_CHARS);
@@ -39,17 +41,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $query->execute([$email]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
+        if (empty($user))
+            array_push($errors,"Your email, $email does not exists in our records.");
+        else if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['logen_in'] = true;
-            $_SESSION['message'] = $user['name']." Welcome back";
+            $_SESSION['message'] = $user['name']." Welcome to our website";
 //            print_r($user);
             header("Location: /mojeeb/index.php");
             exit();
         } else {
-            array_push($errors,"Incorrect email or password");
+            array_push($errors,"Incorrect password");
         }
     }
 }

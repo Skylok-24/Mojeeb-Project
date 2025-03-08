@@ -40,6 +40,7 @@ require_once 'config/Database.php';
             </div>
             <div class="mb-3">
                 <button type="submit" class="btn btn-success">Register</button>
+                <a href="/mojeeb/login.php">Already have an account? login here .</a>
             </div>
         </form>
     </div>

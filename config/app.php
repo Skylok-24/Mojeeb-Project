@@ -4,6 +4,6 @@ $config = [
     'mail_admin' => 'brahmialokman16@gmail.com',
     'dir' => 'ltr',
     'lang' => 'en',
-    'app_url' => 'http://127.0.0.1/mojeeb'
+    'app_url' => 'http://localhost/mojeeb'
 ];
 ?>
