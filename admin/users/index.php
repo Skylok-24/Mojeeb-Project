@@ -1,10 +1,18 @@
 <?php
+ob_start();
 $title = "Users";
 $icon = "users";
 require_once __DIR__."/../template/header.php";
 $query = $pdo->prepare("SELECT * FROM users order by id");
 $query->execute();
 $users = $query->fetchAll(PDO::FETCH_ASSOC);
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $query = $pdo->prepare("DELETE FROM users WHERE id=?");
+    $query->execute([$_POST['delete']]);
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <div class="card">
@@ -33,7 +41,10 @@ $users = $query->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= $user['role'] ?></td>
                         <td>
                             <a href="edit.php?id=<?= $user['id'] ?>" class="btn btn-warning">Edite</a>
-                            <a href="" class="btn btn-danger">Delete</a>
+                            <form action="" method="post" style="display: inline-block">
+                                <button  onclick="return confirm('are you sure ?')" type="submit" class="btn btn-danger">Delete</button>
+                                <input  type="hidden" name="delete" value="<?= $user['id'] ?>">
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -43,4 +54,6 @@ $users = $query->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-<?php require_once __DIR__.'/../template/footer.php'?>
+<?php
+ob_end_flush();
+require_once __DIR__.'/../template/footer.php'?>

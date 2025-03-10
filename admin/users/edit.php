@@ -1,70 +1,100 @@
 <?php
+ob_start();
 $title = "Edit user";
 $icon = "users";
 require_once __DIR__."/../template/header.php";
+
 function filterString($text)
 {
     $text = filter_var(trim($text),FILTER_SANITIZE_SPECIAL_CHARS);
     if (empty($text)) {
         return false;
-    }else {
+    }else
         return $text;
-    }
 }
 
 function filterEmail($text)
 {
-    $email = filter_var(trim($text),FILTER_SANITIZE_EMAIL);
-    if (filter_var($email,FILTER_VALIDATE_EMAIL)) {
-        return $email;
-    }else {
+    $text = filter_var(trim($text),FILTER_SANITIZE_EMAIL);
+    if (filter_var($text,FILTER_VALIDATE_EMAIL)){
+        return $text;
+    }else
         return false;
-    }
 }
-//echo "lokman2004" !== "lokman20204";
-$email = $name = $password = $role = '';
+
+$email = $name = $role = $passwordhash = '';
 $errors = [];
-if( $_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name']; $email = $_POST['email'] ; $password = $_POST['pass'];$role = $_POST['role'];
-    if (!empty($_POST['name']) && !empty($_POST['email']) &&  !empty($_POST['pass']) && !empty($_POST['role'])) {
-        $name = filterString($name);
-        $email = filterEmail($email);
-        if (!$name) {
-            array_push($errors,"Your Name is Invalid");
-        }
-        if (!$email) {
-            array_push($errors,"Your Email is Invalid");
-        }
-        if (strlen($password) < 8) {
-            array_push($errors,"Password must be at least 8 characters long.");
-        }
-    }else {
-        if (empty($_POST['name'])) array_push($errors,"Your Name is required");
-        if (empty($_POST['email'])) array_push($errors,"Your Email is required");
-        if (empty($_POST['pass'])) array_push($errors,"Your Password is required");
-        if (empty($_POST['role'])) array_push($errors,"Role is required");
-    }
+if (empty($_GET['id']) && empty($_POST)) die("Missing id parameter");
+if (isset($_GET['id'])) {
+    $query = $pdo->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
+    $query->execute([$_GET['id']]);
+    $user = $query->fetch();
+    $name = $user['name'];
+    $email = $user['email'];
+    $role = $user['role'];
+}
+$id = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $i = 0;
+    $errors = [];
 
-    if (!count($errors)) {
+    try {
+        if (!$id) {
+            die("User ID is missing!");
+        }
 
-        $passwordhash = password_hash($password,PASSWORD_DEFAULT);
-        try {
-            $query = $pdo->prepare("INSERT INTO users (email, name, role, password) VALUES (?, ?, ?, ?)");
-            $query->execute([$email, $name, $role, $passwordhash]);
+        if (!empty($_POST['pass'])) {
+            $passwordhash = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+            $query = $pdo->prepare("UPDATE users SET password=? WHERE id=?");
+            if ($query->execute([$passwordhash, $id])) {
+                $i++;
+            }
+        }
+
+        if (!empty($_POST['name'])) {
+            $name = filterString($_POST['name']);
+            if ($name) {
+                $query = $pdo->prepare("UPDATE users SET name=? WHERE id=?");
+                if ($query->execute([$name, $id])) {
+                    $i++;
+                }
+            }
+        }
+
+        if (!empty($_POST['email'])) {
+            $email = filterEmail($_POST['email']);
+            if ($email) {
+                $query = $pdo->prepare("UPDATE users SET email=? WHERE id=?");
+                if ($query->execute([$email, $id])) {
+                    $i++;
+                }
+            }
+        }
+
+        if (!empty($_POST['role'])) {
+            $query = $pdo->prepare("UPDATE users SET role=? WHERE id=?");
+            if ($query->execute([$_POST['role'], $id])) {
+                $i++;
+            }
+        }
+
+        if ($i > 0) {
             header("Location: index.php");
             exit();
-        } catch (PDOException $e) {
-            array_push($errors, "Database Error: " . $e->getMessage());
         }
 
+    } catch (PDOException $e) {
+        array_push($errors, $e->getMessage());
     }
 }
+
+ob_end_flush();
 ?>
 
 <div class="card">
     <div class="content">
         <?php require_once __DIR__.'/../template/errors.php'?>
-        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+        <form action="<?= $_SERVER['PHP_SELF'] . "?id=" . $_GET['id'] ?>" method="post">
             <div class="form-group">
                 <label for="email" class="form-label">Your Email:</label>
                 <input type="email" name="email" class="form-control" placeholder="Your Email" id="email" value="<?= $email ?>">
@@ -75,7 +105,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="pass" class="form-label">Your Password:</label>
-                <input type="password" name="pass" class="form-control" placeholder="Your Password" id="pass" value="<?= $password ?>">
+                <input type="password" name="pass" class="form-control" placeholder="Your Password" id="pass" value="">
             </div>
             <div class="form-group">
                 <label for="confirm_pass" class="form-label">Role :</label>
@@ -89,7 +119,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="submit" class="btn btn-success">Update</button>
             </div>
         </form>
     </div>
