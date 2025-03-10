@@ -66,35 +66,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $subject = "Reset password";
             $message = "Click on the following link to reset your password : ".$reset_link;
             $headers = "From : lokmanlooka@gmail.com";
-//            $mail = new PHPMailer(true);
-//
-//            try {
-//
-//                $mail->isSMTP();
-//                $mail->Host       = 'smtp.gmail.com';
-//                $mail->SMTPAuth   = true;
-//                $mail->Username   = 'lokmanlooka@gmail.com';
-//                $mail->Password   = 'pajq dkiw tzys ktvk';
-//                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-//                $mail->Port       = 587;
-//
-//
-//                $mail->setFrom('lokmanlooka@gmail.com', 'Lokman Brahmia');
-//                $mail->addAddress($to);
-//                $mail->isHTML(true);
-//                $mail->CharSet = 'UTF-8';
-//                $mail->Subject = "Reset Password";
-//                $mail->Body = "
-//<div style='font-family: Arial, sans-serif;'>
-//    <p>Click on the following link to reset your password:</p>
-//    <p><a href='{$reset_link}' style='background-color: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; font-weight: bold;'>Reset Your Password</a></p>
-//    <p>If the button doesn't work, copy and paste this URL: {$reset_link}</p>
-//</div>";
-//                $mail->send();
-//                $_SESSION['message'] = "A password reset link has been sent to your email.";
-//            } catch (Exception $e) {
-//                array_push($errors,"Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-//            }
+            $mail = new PHPMailer(true);
+
+            try {
+
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'lokmanlooka@gmail.com';
+                $mail->Password   = 'pajq dkiw tzys ktvk';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = 587;
+
+
+                $mail->setFrom('lokmanlooka@gmail.com', 'Lokman Brahmia');
+                $mail->addAddress($to);
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Subject = "Reset Password";
+                $mail->Body = "
+<div style='font-family: Arial, sans-serif;'>
+    <p>Click on the following link to reset your password:</p>
+    <p><a href='{$reset_link}' style='background-color: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; font-weight: bold;'>Reset Your Password</a></p>
+    <p>If the button doesn't work, copy and paste this URL: {$reset_link}</p>
+</div>";
+                $mail->send();
+                $_SESSION['message'] = "A password reset link has been sent to your email.";
+            } catch (Exception $e) {
+                array_push($errors,"Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            }
         }
     }
 }

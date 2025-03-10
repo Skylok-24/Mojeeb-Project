@@ -1,8 +1,14 @@
+<?php
+require_once __DIR__.'/../../config/app.php';
+require_once __DIR__.'/../../config/Database.php';
+error_reporting(E_ALL);
+ini_set('display_errors',1);
+?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.ico">
+    <link rel="icon" type="image/png" href="<?= $config['admin_assets'] ?>/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
     <title>Light Bootstrap Dashboard by Creative Tim</title>
@@ -12,29 +18,29 @@
 
 
     <!-- Bootstrap core CSS     -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="<?= $config['admin_assets'] ?>/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Animation library for notifications   -->
-    <link href="assets/css/animate.min.css" rel="stylesheet"/>
+    <link href="<?= $config['admin_assets'] ?>/css/animate.min.css" rel="stylesheet"/>
 
     <!--  Light Bootstrap Table core CSS    -->
-    <link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet"/>
+    <link href="<?= $config['admin_assets'] ?>/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet"/>
 
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="assets/css/demo.css" rel="stylesheet" />
+    <link href="<?= $config['admin_assets'] ?>/css/demo.css" rel="stylesheet" />
 
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+    <link href="/mojeeb/admin/template/BS3/assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
 
 </head>
 <body>
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="blue" data-image="/mojeeb/admin/template/BS3/assets/img/sidebar-4.jpg">
 
         <!--
 
@@ -56,37 +62,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Dashboard</a>
+                    <a class="navbar-brand" href="#"><?= $title ?></a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-dashboard"></i>
+                                <i class="fa fa-<?= $icon ?>"></i>
                                 <p class="hidden-lg hidden-md">Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-globe"></i>
-                                <b class="caret hidden-lg hidden-md"></b>
-                                <p class="hidden-lg hidden-md">
-                                    5 Notifications
-                                    <b class="caret"></b>
-                                </p>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Notification 1</a></li>
-                                <li><a href="#">Notification 2</a></li>
-                                <li><a href="#">Notification 3</a></li>
-                                <li><a href="#">Notification 4</a></li>
-                                <li><a href="#">Another notification</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="">
-                                <i class="fa fa-search"></i>
-                                <p class="hidden-lg hidden-md">Search</p>
                             </a>
                         </li>
                     </ul>
@@ -96,24 +79,6 @@
                             <a href="">
                                 <p>Account</p>
                             </a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <p>
-                                    Dropdown
-                                    <b class="caret"></b>
-                                </p>
-
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
                         </li>
                         <li>
                             <a href="#">
