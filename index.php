@@ -10,9 +10,9 @@ require_once 'classes/Product.php';
 require_once 'config/Database.php';
 
 setcookie('is_admin','0',time()+30*24*60*60);
-if (isset($_COOKIE['username'])) {
-    echo 'Hello ' . $_COOKIE['username'];
-}
+//if (isset($_COOKIE['username'])) {
+//    echo 'Hello ' . $_COOKIE['username'];
+//}
 $services = new Services();
 $products = new Product();
 $products->taxRate = .05;
@@ -34,7 +34,7 @@ require_once 'template/message.php';
         <?php foreach ($products as $product) { ?>
 
             <div class="col-md-4">
-                <div class="card mb-3">
+                <div class="card mb-3 shadow">
                     <div class="custom-card-image" style = "background-image: url(<?= $config['app_url'].$product['image'] ?>)" ></div>
                     <div class="card-body">
                         <div class="card-title"><?= $product['name'] ?></div>

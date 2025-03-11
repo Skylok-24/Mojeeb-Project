@@ -1,7 +1,15 @@
 <?php
+
+include_once 'Database.php';
+
+$query = $pdo->prepare("SELECT * FROM settings");
+$query->execute();
+$settings = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
 $config = [
-    'app_name' => 'Service App',
-    'mail_admin' => 'brahmialokman16@gmail.com',
+    'app_name' => $settings[0]['app_name'],
+    'mail_admin' => $settings[0]['admin_email'],
     'dir' => 'ltr',
     'lang' => 'en',
     'app_url' => 'http://localhost/mojeeb',

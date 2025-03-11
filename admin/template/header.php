@@ -1,8 +1,11 @@
 <?php
+session_start();
 require_once __DIR__.'/../../config/app.php';
 require_once __DIR__.'/../../config/Database.php';
 error_reporting(E_ALL);
 ini_set('display_errors',1);
+if ($_SESSION['role'] == 'user' || empty($_SESSION))
+    header("Location: /mojeeb/index.php");
 ?>
 <!doctype html>
 <html lang="en">
@@ -11,7 +14,7 @@ ini_set('display_errors',1);
     <link rel="icon" type="image/png" href="<?= $config['admin_assets'] ?>/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Light Bootstrap Dashboard by Creative Tim</title>
+    <title><?= $config['app_name'] ?></title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />

@@ -1,14 +1,14 @@
 <?php
 ob_start();
-$title = "Services";
-$icon = "cubes";
+$title = "Products";
+$icon = "dropbox";
 require_once __DIR__."/../template/header.php";
-$query = $pdo->prepare("SELECT * FROM services order by id");
+$query = $pdo->prepare("SELECT * FROM products order by id");
 $query->execute();
 $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $query = $pdo->prepare("DELETE FROM services WHERE id=?");
+    $query = $pdo->prepare("DELETE FROM products WHERE id=?");
     $query->execute([$_POST['delete']]);
     header("Location: index.php");
     exit();
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <div class="content">
         <a href="create.php" class="btn btn-success">Create service</a>
         <p class="header">
-            Services : <?= count($users) ?>
+            Products : <?= count($users) ?>
         </p>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <td>Name</td>
                     <td>description</td>
                     <td>Price</td>
+                    <td>Image</td>
                     <td width="200px">Action</td>
                 </tr>
                 </thead>
@@ -39,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <td><?= $user['name'] ?></td>
                         <td><?= $user['description'] ?></td>
                         <td><?= $user['price'] ?></td>
+                        <td><img src="<?= $config['app_url'].'/'.$user['image'] ?>" width="80px" alt=""></td>
                         <td>
                             <a href="edit.php?id=<?= $user['id'] ?>" class="btn btn-warning">Edite</a>
                             <form action="" method="post" style="display: inline-block">

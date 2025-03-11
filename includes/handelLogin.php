@@ -1,7 +1,7 @@
 <?php
 
 if (!empty($_SESSION['logen_in'])) {
-    header("Location: /mojeeb/index.php");
+    header("Location: /mojeeb");
 }
 function filterString($text)
 {
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (empty($_POST['pass'])) array_push($errors,"Your Password is required");
     }
     if (!count($errors)) {
-        $query = $pdo->prepare("SELECT id, email, password , name FROM users WHERE email = ?");
+        $query = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         $query->execute([$email]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['email'] = $user['email'];
+            $_SESSION['role'] = $user['role'];
             $_SESSION['logen_in'] = true;
             $_SESSION['message'] = $user['name']." Welcome to our website";
 //            print_r($user);
